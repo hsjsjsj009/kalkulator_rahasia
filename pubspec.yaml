@@ -14,10 +14,12 @@ description: Sebuah kalkulator rahasia
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  flutter_redux: ^0.6.0
   passwordfield: ^0.0.5
+  redux: ^4.0.0
   flutter:
     sdk: flutter
 

@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kalkulator_rahasia/loginPage/loginPage.dart';
+import 'package:kalkulator_rahasia/reducer/reducer.dart';
+import 'package:redux/redux.dart';
 
-void main() => runApp(MaterialApp(
-  home: MainApp(),
-));
+void main() {
+  final Store<Map> store = Store<Map>(stateReducer,initialState: initialState);
+  runApp(
+      StoreProvider(
+        store: store,
+        child: MaterialApp(
+          home: App(),
+        ),
+      ));
+}
 
-class MainApp extends StatelessWidget{
+class App extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return LoginPage();
+      return LoginPage();
   }
-
 }
 
