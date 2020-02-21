@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:kalkulator_rahasia/calculator/calculatorPage.dart';
 import 'package:kalkulator_rahasia/loginPage/loginPage.dart';
 import 'package:kalkulator_rahasia/reducer/reducer.dart';
 import 'package:redux/redux.dart';
@@ -9,9 +10,7 @@ void main() {
   runApp(
       StoreProvider(
         store: store,
-        child: MaterialApp(
-          home: App(),
-        ),
+        child: App(),
       ));
 }
 
@@ -19,7 +18,18 @@ class App extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-      return LoginPage();
+      return StoreConnector<Map,Map>(
+        converter: (store) => {
+          "loggedIn":store.state["loggedIn"],
+          "darkTheme":store.state["darkTheme"]
+        },
+        builder: (context, state){
+          return MaterialApp(
+            darkTheme: state["darkTheme"] ? ThemeData.dark() : ThemeData.light(),
+            home: state["loggedIn"] ? CalculatorPage() : LoginPage(),
+          );
+        },
+      );
   }
 }
 
