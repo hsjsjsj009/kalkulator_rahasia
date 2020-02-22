@@ -1,7 +1,8 @@
 import 'package:expressions/expressions.dart';
+import 'package:flutter/cupertino.dart';
 
 String displayCalculator(String valueBefore,String input){
-      if(double.tryParse(valueBefore) == null && double.tryParse(input) == null){
+      if(double.tryParse(valueBefore) == null && input.compareTo(".") != 0 && double.tryParse(input) == null ){
         return valueBefore;
       }
       if(valueBefore.compareTo("0") == 0 && input.compareTo("00") == 0){
@@ -10,7 +11,26 @@ String displayCalculator(String valueBefore,String input){
       if(valueBefore.compareTo("0") == 0 && input.compareTo(".") != 0 && double.tryParse(input) != null){
         return input;
       }
-      if(valueBefore.length > 10){
+      if(valueBefore.compareTo("0") == 0 && input.compareTo(".") != 0 && double.tryParse(input) == null){
+        return "0";
+      }
+      if(input.compareTo(".") == 0){
+        var numberArray = valueBefore.split(RegExp(r'[*|+|/|-]'));
+        debugPrint(numberArray.toString());
+        switch(numberArray.length){
+          case 1:
+            if(numberArray[0].contains(".")){
+              return valueBefore;
+            }
+            break;
+          case 2:
+            if(numberArray[1].contains(".")){
+              return valueBefore;
+            }
+            break;
+        }
+      }
+      if(valueBefore.length > 11){
         return valueBefore;
       }
       return valueBefore+input;
@@ -20,7 +40,11 @@ final evaluator = const ExpressionEvaluator();
 
 dynamic calculateCalculator(String value){
   Expression expression = Expression.parse(value);
-  return evaluator.eval(expression, {});
+  var result = evaluator.eval(expression, {});
+  if(result.toString().contains(".")){
+    return (result as double).toStringAsFixed(2);
+  }
+  return result;
 }
 
 String deleteValueOnCalculator(String valueBefore){

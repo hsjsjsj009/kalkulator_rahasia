@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:kalkulator_rahasia/calculator/calculatorPage.dart';
 import 'package:kalkulator_rahasia/loginPage/loginPage.dart';
 import 'package:kalkulator_rahasia/reducer/reducer.dart';
 import 'package:redux/redux.dart';
 
+final Store<Map> store = Store<Map>(stateReducer,initialState: initialState);
+
 void main() {
-  final Store<Map> store = Store<Map>(stateReducer,initialState: initialState);
   runApp(
       StoreProvider(
         store: store,
@@ -26,7 +26,7 @@ class App extends StatelessWidget{
         builder: (context, state){
           return MaterialApp(
             darkTheme: state["darkTheme"] ? ThemeData.dark() : ThemeData.light(),
-            home: state["loggedIn"] ? CalculatorPage() : LoginPage(),
+            home: LoginPage(),
           );
         },
       );

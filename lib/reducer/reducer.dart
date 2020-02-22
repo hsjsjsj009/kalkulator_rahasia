@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:kalkulator_rahasia/reducer/actions.dart';
 import 'package:kalkulator_rahasia/reducer/calculatorFunctions/calculatorFunctions.dart';
-import 'package:redux/redux.dart';
 
 final Map initialState ={
   "darkTheme":false,
