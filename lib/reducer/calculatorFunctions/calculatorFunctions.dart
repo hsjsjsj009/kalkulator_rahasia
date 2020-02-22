@@ -2,7 +2,7 @@ import 'package:expressions/expressions.dart';
 import 'package:flutter/cupertino.dart';
 
 String displayCalculator(String valueBefore,String input){
-      if(double.tryParse(valueBefore) == null && input.compareTo(".") != 0 && double.tryParse(input) == null ){
+      if(double.tryParse(valueBefore) == null && (input.compareTo(".") != 0 && input.compareTo("-") != 0) && double.tryParse(input) == null ){
         return valueBefore;
       }
       if(valueBefore.compareTo("0") == 0 && input.compareTo("00") == 0){
@@ -12,7 +12,16 @@ String displayCalculator(String valueBefore,String input){
         return input;
       }
       if(valueBefore.compareTo("0") == 0 && input.compareTo(".") != 0 && double.tryParse(input) == null){
-        return "0";
+        return input.compareTo("-") == 0 ? "-" : "0";
+      }
+      if(input.compareTo("-") == 0){
+        if('-'.allMatches(valueBefore).length == 3){
+          return valueBefore;
+        }else if ('-'.allMatches(valueBefore).length == 1 && double.tryParse(valueBefore) != null){
+          return valueBefore + input;
+        }else if('-'.allMatches(valueBefore).length == 1 && valueBefore.endsWith("-")){
+          return valueBefore;
+        }
       }
       if(input.compareTo(".") == 0){
         var numberArray = valueBefore.split(RegExp(r'[*|+|/|-]'));
@@ -29,6 +38,9 @@ String displayCalculator(String valueBefore,String input){
             }
             break;
         }
+      }
+      if(double.tryParse(input) == null && valueBefore.endsWith(".")){
+        return valueBefore;
       }
       if(valueBefore.length > 11){
         return valueBefore;
