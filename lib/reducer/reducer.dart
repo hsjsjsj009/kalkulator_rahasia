@@ -6,6 +6,7 @@ final Map initialState ={
   "loggedIn":false,
   "calculatorValue":"0",
   "calculatorResult":0,
+  "calculatorHistory":[],
   "alreadyCalculated":false,
 };
 
@@ -15,8 +16,10 @@ Map stateReducer(Map previousState, actions){
       if(previousState["alreadyCalculated"]){
         return{
           ...previousState,
+          "calculatorHistory":[previousState["calculatorValue"]+"\n"+previousState["calculatorResult"].toString()] + previousState["calculatorHistory"],
           "alreadyCalculated":false,
-          "calcualtorValue":deleteValueOnCalculator(previousState["calculatorResult"])
+          "calculatorValue":deleteValueOnCalculator(previousState["calculatorResult"].toString()),
+          "calculatorResult":0
         };
       }
       return {
@@ -27,6 +30,7 @@ Map stateReducer(Map previousState, actions){
       if(previousState["alreadyCalculated"] && double.tryParse(actions["data"].toString()) == null){
         return {
           ...previousState,
+          "calculatorHistory":[previousState["calculatorValue"]+"\n"+previousState["calculatorResult"].toString()] + previousState["calculatorHistory"],
           "calculatorResult":0,
           "alreadyCalculated":false,
           "calculatorValue":displayCalculator(previousState["calculatorResult"].toString(), actions["data"].toString())
@@ -34,6 +38,7 @@ Map stateReducer(Map previousState, actions){
       }else if(previousState["alreadyCalculated"] && double.tryParse(actions["data"].toString()) != null){
         return {
           ...previousState,
+          "calculatorHistory":[previousState["calculatorValue"]+"\n"+previousState["calculatorResult"].toString()] + previousState["calculatorHistory"],
           "calculatorResult":0,
           "alreadyCalculated":false,
           "calculatorValue": actions["data"].toString()

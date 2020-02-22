@@ -10,7 +10,7 @@ class NumberGrid extends StatelessWidget{
     var fontStyle = TextStyle(
         fontSize: 30,
     );
-    var buttonHeight = MediaQuery.of(context).size.height/9;
+    var buttonHeight = MediaQuery.of(context).size.height/11;
     var buttonWidth = MediaQuery.of(context).size.width/5;
 
     return StoreConnector<Map,Map>(

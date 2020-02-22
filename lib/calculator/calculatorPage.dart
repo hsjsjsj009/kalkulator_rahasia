@@ -50,6 +50,24 @@ class _CalculatorPageState extends State<CalculatorPage>{
     // TODO: implement build
     return StoreConnector<Map,Map>(
       builder: (context, redux){
+        List<Widget> history = [];
+        for(int i=0;i<((redux["calculatorHistory"] as List).length < 3 ? (redux["calculatorHistory"] as List).length : 3);i++){
+          history.insert(0, Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 10, 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Text(
+                  redux["calculatorHistory"][i],
+                  style: TextStyle(
+                      fontSize: 26
+                  ),
+                  textAlign: TextAlign.right,
+                )
+              ],
+            ),
+          ));
+        }
         return WillPopScope(
           onWillPop: _onBackPressed,
           child: Scaffold(
@@ -139,6 +157,10 @@ class _CalculatorPageState extends State<CalculatorPage>{
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                Column(
+                  children: history,
+                ),
+                Divider(color: redux["darkTheme"] ? Colors.white70 : Colors.black12,thickness: 3,),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                   child: Row(
@@ -176,7 +198,8 @@ class _CalculatorPageState extends State<CalculatorPage>{
             "darkTheme":store.state["darkTheme"],
             "changeThemeFunc":() => store.dispatch({"action":ReducerActions.CHANGE_THEME}),
             "calculatorValue":store.state["calculatorValue"],
-            "calculatorResult":store.state["calculatorResult"]
+            "calculatorResult":store.state["calculatorResult"],
+            "calculatorHistory":store.state["calculatorHistory"]
           };
       },
     );
