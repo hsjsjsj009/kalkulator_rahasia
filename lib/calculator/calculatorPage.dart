@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kalkulator_rahasia/about_me/aboutMe.dart';
@@ -7,6 +8,12 @@ import 'package:kalkulator_rahasia/calculator/numberGrid.dart';
 import 'package:kalkulator_rahasia/reducer/actions.dart';
 
 import '../main.dart';
+
+final ScrollController calculatorScrollController = ScrollController();
+
+void scrollToInitialHistory(){
+  calculatorScrollController.animateTo(0.0, duration: Duration(milliseconds: 200), curve: Curves.ease);
+}
 
 class CalculatorPage extends StatefulWidget{
   _CalculatorPageState createState() => _CalculatorPageState();
@@ -51,23 +58,19 @@ class _CalculatorPageState extends State<CalculatorPage>{
     return StoreConnector<Map,Map>(
       builder: (context, redux){
         List<Widget> history = [];
-        for(int i=0;i<((redux["calculatorHistory"] as List).length < 3 ? (redux["calculatorHistory"] as List).length : 3);i++){
+        for(int i=0;i<((redux["calculatorHistory"] as List).length);i++){
           history.insert(0, Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 10, 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  redux["calculatorHistory"][i],
-                  style: TextStyle(
-                      fontSize: 26
-                  ),
-                  textAlign: TextAlign.right,
-                )
-              ],
+            child: Text(
+              redux["calculatorHistory"][i],
+              style: TextStyle(
+                  fontSize: 28
+              ),
+              textAlign: TextAlign.right,
             ),
           ));
         }
+        
         return WillPopScope(
           onWillPop: _onBackPressed,
           child: Scaffold(
@@ -154,24 +157,38 @@ class _CalculatorPageState extends State<CalculatorPage>{
               ),
             ),
             body: aboutMe? AboutMe() : Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Column(
-                  children: history,
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                    child: SingleChildScrollView(
+                      controller: calculatorScrollController,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: history,
+                      ),
+                      reverse: true,
+                    ),
+                  ),
                 ),
                 Divider(color: redux["darkTheme"] ? Colors.white70 : Colors.black12,thickness: 3,),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(redux["calculatorValue"],
-                        style: TextStyle(
-                            fontSize: 50
-                        ),
-                      )
-                    ],
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(redux["calculatorValue"],
+                          style: TextStyle(
+                              fontSize: 50
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -199,7 +216,8 @@ class _CalculatorPageState extends State<CalculatorPage>{
             "changeThemeFunc":() => store.dispatch({"action":ReducerActions.CHANGE_THEME}),
             "calculatorValue":store.state["calculatorValue"],
             "calculatorResult":store.state["calculatorResult"],
-            "calculatorHistory":store.state["calculatorHistory"]
+            "calculatorHistory":store.state["calculatorHistory"],
+            "alreadyCalculated":store.state["alreadyCalculated"]
           };
       },
     );
