@@ -185,33 +185,12 @@ class NumberGrid extends StatelessWidget{
   List<Widget> generateNumberButton(reducer, buttonHeight,buttonWidth, fontStyle, numberColor, opColor){
     var calculatorSymbol = ["/","X","-"];
     var numberButton = <Widget>[];
-    int counter = 9;
+    int counter = 1;
     for(int i=0;i<3;i++){
       var tempButtonList = <Widget>[];
-      for(int j=3;j>0;j--){
+      for(int j=0;j<3;j++){
         String value = counter.toString();
-        if(j==3){
-          tempButtonList.add(
-              SizedBox(
-                width: buttonWidth,
-                height: buttonHeight,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: reducer["darkTheme"] ? Colors.white : Colors.black)
-                  ),
-                  color: opColor,
-                  child: Text(
-                    calculatorSymbol[i].toString(),
-                    style: fontStyle,
-                  ),
-                  onPressed: () {
-                      reducer["changeValueFunc"](calculatorSymbol[i].compareTo("X") == 0 ? "*":calculatorSymbol[i]);
-                  },
-                ),
-              )
-          );
-        }
-        tempButtonList.insert(0,
+        tempButtonList.add(
             SizedBox(
               width: buttonWidth,
               height: buttonHeight,
@@ -230,7 +209,28 @@ class NumberGrid extends StatelessWidget{
               ),
             )
         );
-        counter--;
+        if(j==2){
+          tempButtonList.add(
+              SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: reducer["darkTheme"] ? Colors.white : Colors.black)
+                  ),
+                  color: opColor,
+                  child: Text(
+                    calculatorSymbol[i].toString(),
+                    style: fontStyle,
+                  ),
+                  onPressed: () {
+                    reducer["changeValueFunc"](calculatorSymbol[i].compareTo("X") == 0 ? "*":calculatorSymbol[i]);
+                  },
+                ),
+              )
+          );
+        }
+        counter++;
       }
       numberButton.add(
           Row(

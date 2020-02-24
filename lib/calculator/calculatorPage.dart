@@ -184,24 +184,27 @@ class _CalculatorPageState extends State<CalculatorPage>{
                       children: <Widget>[
                         Text(redux["calculatorValue"],
                           style: TextStyle(
-                              fontSize: 50
+                              fontSize: 48
                           ),
                         )
                       ],
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(redux["calculatorResult"].toString(),
-                        style: TextStyle(
-                            fontSize: 50
-                        ),
-                      )
-                    ],
+                Expanded(
+                  flex: 1,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(redux["calculatorResult"].toString(),
+                          style: TextStyle(
+                              fontSize: 48
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 NumberGrid(),

@@ -25,7 +25,7 @@ class App extends StatelessWidget{
         },
         builder: (context, state){
           return MaterialApp(
-            darkTheme: state["darkTheme"] ? ThemeData.dark() : ThemeData.light(),
+            theme: state["darkTheme"] ? ThemeData.dark() : ThemeData.light(),
             home: LoginPage(),
           );
         },
